@@ -1,0 +1,28 @@
+[<?php
+require_once("../helpers/conexion.php");
+if (isset($_GET['term'])){
+	$return_arr = array();
+$criterio = strtolower($_GET["term"]);
+	    global $db;
+	        $sql='SELECT nombres, apellidos, carnet, idcobradores FROM cobradores WHERE carnet LIKE :term OR nombres LIKE :term' ;
+	   	     $result=$db->Execute($sql);
+		     $nombres =array();
+	        foreach($result as $r){
+			
+			$nombres=array($r["nombres"]." ".$r["apellidos"]=>$r["carnet"]."||".$r["idcobradores"]);
+			}
+	   $contador=0;
+		foreach ($nombres as $descripcion => $valor) 
+{
+	
+		if ($contador++ > 0) print ", "; // agregamos esta linea porque cada elemento debe estar separado por una coma
+	//print "{ \"label\" : \"$descripcion\", \"value\" : { \"descripcion\" : \"$descripcion\", \"precio\" : $valor } }";
+	$c = explode("||", $valor);
+	print "{ \"label\" : \"$descripcion\", \"valor\" : \"$c[0]\", \"idcobradores\" : \"$c[1]\" }";
+	
+} // siguiente producto*/
+
+//echo json_encode($result);
+}
+
+?>]
